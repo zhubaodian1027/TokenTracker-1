@@ -9549,9 +9549,15 @@ function resolveKimiCodeDefaultModel(env = process.env) {
   }
 }
 
+// Display-name normalization for aliases that read poorly on dashboards.
+const KIMI_CODE_MODEL_RENAMES = {
+  "k2d8-preview": "k2.8",
+};
+
 function kimiCodeModelAlias(value) {
   if (typeof value !== "string" || !value) return null;
-  return value.includes("/") ? value.split("/").pop() : value;
+  const alias = value.includes("/") ? value.split("/").pop() : value;
+  return KIMI_CODE_MODEL_RENAMES[alias] || alias;
 }
 
 async function parseKimiCodeIncremental({ wireFiles, cursors, queuePath, onProgress, env, model } = {}) {

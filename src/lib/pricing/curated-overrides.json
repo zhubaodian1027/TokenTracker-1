@@ -333,11 +333,11 @@
       "cache_read": 0.3,
       "note": "Kimi Desktop (Kimi.app embedded kimi-code runtime) alias for the K3 family. Same rates as k3."
     },
-    "k2d8-preview": {
+    "k2.8": {
       "input": 0.95,
       "output": 4,
       "cache_read": 0.19,
-      "note": "Kimi Desktop alias for K2.8 Preview (the CLI records the same model as \"kimi-for-coding\"). Priced at the kimi-k2.7-code tier (official rates CNY 6.5/27/1.3 per MTok)."
+      "note": "Kimi Desktop emits K2.8 Preview as alias \"k2d8-preview\" (the CLI uses \"kimi-for-coding\"); normalized to \"k2.8\" at parse time. Priced at the kimi-k2.7-code tier (official rates CNY 6.5/27/1.3 per MTok)."
     },
     "daimon-kimi-code": {
       "input": 0.95,
