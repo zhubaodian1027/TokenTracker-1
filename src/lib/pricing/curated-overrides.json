@@ -321,6 +321,12 @@
       "cache_read": 0.3,
       "note": "Bare alias emitted by Kimi Code (modelAlias \"kimi-code/k3\" -> \"k3\"). Same rates as kimi-k3."
     },
+    "k3-256k": {
+      "input": 3,
+      "output": 15,
+      "cache_read": 0.3,
+      "note": "Kimi Code 256k-context variant (modelAlias \"kimi-code/k3-256k\" -> \"k3-256k\"). Same model family and rates as k3."
+    },
     "glm-5.3": {
       "input": 1.4,
       "output": 4.4,

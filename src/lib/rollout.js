@@ -9586,6 +9586,15 @@ async function parseKimiCodeIncremental({ wireFiles, cursors, queuePath, onProgr
         entry.type === "context.append_loop_event" && entry.event && typeof entry.event === "object"
           ? entry.event
           : entry;
+      // Newer wire protos dropped modelAlias from config.update; it now rides
+      // on per-request llm.request events. Without this, such sessions fall
+      // back to config.toml's default_model and get misattributed (e.g. K2.8
+      // Preview "kimi-for-coding" recorded as "k3").
+      if (evt && evt.type === "llm.request") {
+        const alias = kimiCodeModelAlias(evt.modelAlias || evt.model);
+        if (alias) fileModel = alias;
+        continue;
+      }
       if (!evt || evt.type !== "step.end") continue;
       const usage = evt.usage;
       if (!usage || typeof usage !== "object") continue;
