@@ -15486,9 +15486,41 @@ test("resolveKimiCodeWireFiles walks agents/<name>/wire.jsonl inside sessions", 
     await fs.writeFile(path.join(d1, "wire.jsonl"), "");
     await fs.writeFile(path.join(d2, "wire.jsonl"), "");
 
-    const files = resolveKimiCodeWireFiles({ KIMI_CODE_HOME: path.join(tmp, ".kimi-code") });
+    const files = resolveKimiCodeWireFiles({
+      KIMI_CODE_HOME: path.join(tmp, ".kimi-code"),
+      KIMI_DESKTOP_HOME: path.join(tmp, ".kimi-desktop-absent"),
+    });
     assert.equal(files.length, 2);
     assert.ok(files.every((f) => f.endsWith("wire.jsonl")));
+  } finally {
+    await fs.rm(tmp, { recursive: true, force: true });
+  }
+});
+
+test("resolveKimiCodeWireFiles also scans the Kimi Desktop embedded runtime home", async () => {
+  const tmp = await fs.mkdtemp(path.join(os.tmpdir(), "tt-kimi-desktop-resolve-"));
+  try {
+    const cliDir = path.join(tmp, ".kimi-code", "sessions", "wd_a_123", "session_x", "agents", "main");
+    const desktopDir = path.join(
+      tmp,
+      "kimi-desktop-home",
+      "sessions",
+      "wd_b_456",
+      "conv_y",
+      "agents",
+      "main"
+    );
+    await fs.mkdir(cliDir, { recursive: true });
+    await fs.mkdir(desktopDir, { recursive: true });
+    await fs.writeFile(path.join(cliDir, "wire.jsonl"), "");
+    await fs.writeFile(path.join(desktopDir, "wire.jsonl"), "");
+
+    const files = resolveKimiCodeWireFiles({
+      KIMI_CODE_HOME: path.join(tmp, ".kimi-code"),
+      KIMI_DESKTOP_HOME: path.join(tmp, "kimi-desktop-home"),
+    });
+    assert.equal(files.length, 2);
+    assert.ok(files.some((f) => f.includes("kimi-desktop-home")));
   } finally {
     await fs.rm(tmp, { recursive: true, force: true });
   }

@@ -327,6 +327,36 @@
       "cache_read": 0.3,
       "note": "Kimi Code 256k-context variant (modelAlias \"kimi-code/k3-256k\" -> \"k3-256k\"). Same model family and rates as k3."
     },
+    "k3-agent": {
+      "input": 3,
+      "output": 15,
+      "cache_read": 0.3,
+      "note": "Kimi Desktop (Kimi.app embedded kimi-code runtime) alias for the K3 family. Same rates as k3."
+    },
+    "k2d8-preview": {
+      "input": 0.95,
+      "output": 4,
+      "cache_read": 0.19,
+      "note": "Kimi Desktop alias for K2.8 Preview (the CLI records the same model as \"kimi-for-coding\"). Priced at the kimi-k2.7-code tier (official rates CNY 6.5/27/1.3 per MTok)."
+    },
+    "daimon-kimi-code": {
+      "input": 0.95,
+      "output": 4,
+      "cache_read": 0.19,
+      "note": "Kimi Desktop embedded-runtime default agent model. Priced at the kimi-k2.7-code tier."
+    },
+    "k2d6-agent": {
+      "input": 0.95,
+      "output": 4,
+      "cache_read": 0.19,
+      "note": "Kimi Desktop agent alias (K2.6 generation). Priced at the kimi-k2.7-code tier."
+    },
+    "k2d6-agent-swarm": {
+      "input": 0.95,
+      "output": 4,
+      "cache_read": 0.19,
+      "note": "Kimi Desktop swarm-agent alias (K2.6 generation). Priced at the kimi-k2.7-code tier."
+    },
     "glm-5.3": {
       "input": 1.4,
       "output": 4.4,

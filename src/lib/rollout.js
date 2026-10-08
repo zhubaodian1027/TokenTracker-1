@@ -9490,11 +9490,29 @@ function resolveKimiCodeHome(env = process.env) {
   return path.join(home, ".kimi-code");
 }
 
+// Kimi Desktop (Kimi.app) embeds its own kimi-code runtime ("daimon") with the
+// same wire.jsonl format but a separate home:
+//   <appData>/kimi-desktop/daimon-share/daimon/runtime/kimi-code/home
+// Its sessions use desktop-specific model aliases (k2d8-preview, k3-agent,
+// daimon-kimi-code, k2d6-agent*) instead of the CLI's kimi-for-coding/k3.
+function resolveKimiDesktopHome(env = process.env) {
+  const explicit = typeof env?.KIMI_DESKTOP_HOME === "string" ? env.KIMI_DESKTOP_HOME.trim() : "";
+  if (explicit) return path.resolve(explicit);
+  const home = require("node:os").homedir();
+  const rel = path.join("kimi-desktop", "daimon-share", "daimon", "runtime", "kimi-code", "home");
+  if (process.platform === "darwin") {
+    return path.join(home, "Library", "Application Support", rel);
+  }
+  if (process.platform === "win32") {
+    const appData = typeof env?.APPDATA === "string" && env.APPDATA.trim() ? env.APPDATA : path.join(home, "AppData", "Roaming");
+    return path.join(appData, rel);
+  }
+  const configHome = typeof env?.XDG_CONFIG_HOME === "string" && env.XDG_CONFIG_HOME.trim() ? env.XDG_CONFIG_HOME : path.join(home, ".config");
+  return path.join(configHome, rel);
+}
+
 function resolveKimiCodeWireFiles(env = process.env) {
-  const kimiHome = resolveKimiCodeHome(env);
-  if (!kimiHome) return [];
-  const sessionsDir = path.join(kimiHome, "sessions");
-  if (!fssync.existsSync(sessionsDir)) return [];
+  const homes = [resolveKimiCodeHome(env), resolveKimiDesktopHome(env)].filter(Boolean);
   const files = [];
   const walk = (dir, depth) => {
     if (depth > 5) return;
@@ -9506,7 +9524,13 @@ function resolveKimiCodeWireFiles(env = process.env) {
       else if (ent.name === "wire.jsonl") files.push(full);
     }
   };
-  walk(sessionsDir, 0);
+  const seen = new Set();
+  for (const kimiHome of homes) {
+    const sessionsDir = path.join(kimiHome, "sessions");
+    if (seen.has(sessionsDir) || !fssync.existsSync(sessionsDir)) continue;
+    seen.add(sessionsDir);
+    walk(sessionsDir, 0);
+  }
   return files;
 }
 
@@ -24506,6 +24530,7 @@ module.exports = {
   resolveKimiDefaultModel,
   parseKimiIncremental,
   resolveKimiCodeHome,
+  resolveKimiDesktopHome,
   resolveKimiCodeWireFiles,
   resolveKimiCodeDefaultModel,
   parseKimiCodeIncremental,

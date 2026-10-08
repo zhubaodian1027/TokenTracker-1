@@ -204,6 +204,11 @@ const MODEL_PRICING: Record<string, { input: number; output: number; cache_read:
   "kimi-k3": { input: 3, output: 15, cache_read: 0.3 },
   "k3": { input: 3, output: 15, cache_read: 0.3 },
   "k3-256k": { input: 3, output: 15, cache_read: 0.3 },
+  "k3-agent": { input: 3, output: 15, cache_read: 0.3 },
+  "k2d8-preview": { input: 0.95, output: 4, cache_read: 0.19 },
+  "daimon-kimi-code": { input: 0.95, output: 4, cache_read: 0.19 },
+  "k2d6-agent": { input: 0.95, output: 4, cache_read: 0.19 },
+  "k2d6-agent-swarm": { input: 0.95, output: 4, cache_read: 0.19 },
   // ── Z.ai GLM (mirrored from src/lib/pricing/curated-overrides.json).
   //    LiteLLM only keys these under provider prefixes like `zai/glm-5`,
   //    `openrouter/z-ai/glm-4.6`, etc. The reverse-substring fallback in the
